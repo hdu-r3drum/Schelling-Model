@@ -67,7 +67,7 @@ for a in range(1):
     num_agent_nosat = 1    # 存在不满意的个体
     times = 0
     # 如果有节点不满意，那么就搬家，同时总循环次数小于2000次
-    while num_agent_nosat and times < 1:
+    while num_agent_nosat and times < 10000:
         if times % 100 == 0:    #每100次打印一次
             print(times)
         times = times + 1
@@ -229,7 +229,7 @@ for a in range(1):
                 tmap1[nosat_v[agent_b][0]][nosat_v[agent_b][1]] = [temp1_a_0, temp1_a_1, temp1_a_2]
 
         # 财富交换
-        if times % 1000000 == 0:
+        if times % 100 == 0:
             for t in range(10):
                 while (1):
                     agent_i0 = random.randint(0, 19)
