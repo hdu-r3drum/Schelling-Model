@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from operator import truediv
 import random
 import numpy as np
@@ -25,8 +24,8 @@ race_map = []  # 种族
 wealth_threshold = 6  # 财富满意门槛
 race_threshold = 0.79  # 人种满意门槛
 t = 1.2  # 参数t
-a = 0.4  # 搬家策略收益权重
-b = 0.6  # 搬家同质性权重
+a = 0  # 搬家策略收益权重
+b = 1  # 搬家同质性权重
 plt.ion()
 
 
@@ -282,8 +281,11 @@ def calculate_payload(i, j):
     if payload1 > payload0:
         strategy = 1
         payload = payload1
+    elif payload1 == payload0:
+        payload = payload0
     else:
         payload = payload0
+        strategy = 0
     return payload, strategy
 
 
@@ -307,8 +309,8 @@ def move(run_times):
         strategy = strategy_map[i1][j1][0]
         old_payload = calculate_payload(i1, j1)[0]
         new_payload, strategy = calculate_payload(i2, j2)
-        old_race_satisfy = race_satisfy(i1, j1)
-        new_race_satisfy = race_satisfy(i2, j2)
+        old_race_satisfy = race_satisfy(i1, j1, check_race(i1, j1))
+        new_race_satisfy = race_satisfy(i2, j2, check_race(i1, j1))
         if a * new_payload + b * new_race_satisfy > a * old_payload + b * old_race_satisfy:
             temp_a_0 = strategy
             temp_a_1 = strategy_map[i1][j1][1]
@@ -335,8 +337,8 @@ def move(run_times):
             empty.remove(coordinate2)
             empty.append(coordinate1)
 
-            draw_race_map('Race distribution')
-            draw_strategy_map('Strategy distribution')
+            draw_race_map('Race distribution (Round: ' + str(count) + ')')
+            draw_strategy_map('Strategy distribution (Round: ' + str(count) + ')')
 
         count = count + 1
         print(count)
@@ -412,10 +414,9 @@ def check():
     print('defect:' + str(defect))
 
 
-def race_satisfy(x, y):
+def race_satisfy(x, y, center_race):
     population = 0.0
     homogeneity = 0.0
-    center_race = check_race(x, y)
     if check_race((x - 1) % 20, y) != 'empty':
         population = population + 1
         if check_race((x - 1) % 20, y) == center_race:
@@ -454,7 +455,7 @@ if __name__ == '__main__':
     check()
     writeExcel()
     #Moran()
-    move(10000)
+    move(1000)
     writeExcel()
     Weight_Matrix()
     # normalization()
