@@ -23,9 +23,9 @@ strategy_map = []  # 策略
 race_map = []  # 种族
 wealth_threshold = 6  # 财富满意门槛
 race_threshold = 0.79  # 人种满意门槛
-t = 1.2  # 参数t
-a = 0  # 搬家策略收益权重
-b = 1  # 搬家同质性权重
+t = 1.1  # 参数t
+a = 0.3  # 搬家策略收益权重
+b = 0.7  # 搬家同质性权重
 plt.ion()
 
 
@@ -455,7 +455,7 @@ if __name__ == '__main__':
     check()
     writeExcel()
     #Moran()
-    move(1000)
+    move(5000)
     writeExcel()
     Weight_Matrix()
     # normalization()
